@@ -76,6 +76,8 @@
         //switch (aJSON.state) {
         //}
         alert(evt.data);
+        var anObj = JSON.parse(evt.data);
+        alert(anObj);
     }
     
      function onCt_data_ws_Error(evt) 
