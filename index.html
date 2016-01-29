@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <title>a title</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.css" rel="stylesheet">
+    <script src="jquery.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<script>
+    var ct_data_ws;
+    var ir_sender_ws;
+    var roundScan;
+    var originalTimingList, lastTimingList;
+
+    $(document).ready(function() {
+        //alert("Ready!");
+        //output = document.getElementById("output");
+        //ct_data_ws = new WebSocket("ws://thaiftcbk.ddns.net:9000/socket.io");
+        
+        ct_data_ws = new WebSocket("ws://192.168.1.161:9111");
+        //ct_data_ws = new WebSocket("ws://thaiftcbk.ddns.net:9000");
+
+        ct_data_ws.onopen = function(evt) {
+            onCt_data_ws_Open(evt)
+        };
+        ct_data_ws.onclose = function(evt) {
+            onCt_data_ws_Close(evt)
+        };
+        ct_data_ws.onmessage = function(evt) {
+            onCt_data_ws_Message(evt)
+        };
+        ct_data_ws.onerror = function(evt) {
+            onCt_data_ws_Error(evt)
+        };
+
+        $( "#b1" ).click(function() {
+            //alert( "you click be" );
+            ct_data_ws.send($("#firstname").val());
+        });
+
+        $( "#b2" ).click(function() {
+            //alert( "you click be" );
+            ct_data_ws.send("abcdef");
+        });
+
+    });
+
+
+    function onCt_data_ws_Open(evt) {
+        alert("socket open");
+    }
+
+    function onCt_data_ws_Close(evt) {
+        alert("socket is closed");
+    }
+
+    function onCt_data_ws_Message(evt) {
+        //var aJSON = JSON.parse(evt.data);
+
+        //var headerLength,delayFactor,loopFactor;
+        //alert( aJSON.state );
+        //switch (aJSON.state) {
+        //}
+        alert(evt.data);
+    }
+    
+     function onCt_data_ws_Error(evt) 
+     {
+           alert("error");
+     }
+</script>
+
+<body>
+
+<h1>My First Heading</h1>
+
+<p>My first paragraph.</p>
+
+ <form>
+  First name:<br>
+  <input type="text" name="firstname" id="firstname"><br>
+  Last name:<br>
+  <input type="text" name="lastname" id="lastname"><br>
+  <button type="button" id="b1">Sombat</button>
+  <button type="button" id="b2">not Sombat</button>
+</form> 
+
+</body>
+</html>

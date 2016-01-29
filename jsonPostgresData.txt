@@ -1,0 +1,28 @@
+{"count_button":10 ,"volup":[1,2,3,4,5],"voldown":[56,4,3,2]}
+{"count_button":10 ,"button_data": {"volup":[1,2,3,4,5],"voldown":[56,4,3,2]}}
+{"count_button":10 ,"button_data": {"volup":[1,2,3,4,5],"voldown":[56,4,3,2]},"position":[1,2]}
+
+
+{ "count_button":20 ,
+  "button": {
+            "volup":  { 
+                    "position":[1,2],
+                    "data" : [1,2,3,4,5]
+            }
+   }
+}  
+
+{   "count_button":20 , 
+    "button": { 
+            "volup":  { 
+                    "position":[1,2], 
+                    "data" : [1,2,3,4,5]
+            },
+            "voldown":  { 
+                    "position":[1,3], 
+                    "data" : [44,3,2,3,5]  
+            }   
+    }
+}  
+
+select "remoteName", "buttonData"->'button'->>'volup' from "infraredRF_data";
