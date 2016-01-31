@@ -49,7 +49,10 @@
 
         $( "#b1" ).click(function() {
             //alert( "you click be" );
-            ct_data_ws.send($("#firstname").val());
+            var aJson;
+            aJson = "{ \"command\" : \"get_ir\", \"name\" : \"" + $("#firstname").val() + "\" }";
+            //ct_data_ws.send($("#firstname").val());
+            ct_data_ws.send(aJson);
         });
 
         $( "#b2" ).click(function() {
@@ -75,9 +78,14 @@
         //alert( aJSON.state );
         //switch (aJSON.state) {
         //}
-        alert(evt.data);
-        var anObj = JSON.parse(evt.data);
-        alert(anObj);
+        //alert(evt.data);
+        var resultObj = JSON.parse(evt.data);
+        if ( resultObj.status == "found" ){
+            alert("Yes, found the remote");
+        }
+        else{
+            alert("No, not found the remote");
+        }
     }
     
      function onCt_data_ws_Error(evt) 
