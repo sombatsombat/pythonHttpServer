@@ -25,6 +25,8 @@
     var ir_sender_ws;
     var roundScan;
     var originalTimingList, lastTimingList;
+    
+    var cpp_ir_decode_ws;
 
     $(document).ready(function() {
         //alert("Ready!");
@@ -47,6 +49,23 @@
             onCt_data_ws_Error(evt)
         };
 
+        cpp_ir_decode_ws = new WebSocket("ws://thaiftcbk.ddns.net:8080/IR_decode");
+        //cpp_ir_decode_ws = new WebSocket("ws://thaiftcbk.ddns.net:9000");
+
+        cpp_ir_decode_ws.onopen = function(evt) {
+            onCpp_ir_decode_ws_Open(evt)
+        };
+        cpp_ir_decode_ws.onclose = function(evt) {
+            onCpp_ir_decode_ws_Close(evt)
+        };
+        cpp_ir_decode_ws.onmessage = function(evt) {
+            onCpp_ir_decode_ws_Message(evt)
+        };
+        cpp_ir_decode_ws.onerror = function(evt) {
+            onCpp_ir_decode_ws_Error(evt)
+        };        
+        
+        
         $( "#b1" ).click(function() {
             //alert( "you click be" );
             var aJson;
@@ -58,6 +77,18 @@
         $( "#b2" ).click(function() {
             //alert( "you click be" );
             ct_data_ws.send("abcdef");
+        });
+
+        $( "#b3" ).click(function() {
+            //alert( "you click b3" );
+            //cpp_ir_decode_ws.send($("#firstname").val());
+
+            var bytearray = new Uint8Array(3);
+            bytearray[0] = 0x01; // 0x01 = loop scan IR
+            bytearray[1] = 0x02; // 0x01 = loop scan IR
+            bytearray[2] = 0x03; // 0x01 = loop scan IR
+            cpp_ir_decode_ws.send(bytearray);            
+            
         });
 
     });
@@ -92,6 +123,37 @@
      {
            alert("error");
      }
+     
+    function onCpp_ir_decode_ws_Open(evt) {
+        alert("socket open");
+    }
+
+    function onCpp_ir_decode_ws_Close(evt) {
+        alert("socket is closed");
+    }
+
+    function onCpp_ir_decode_ws_Message(evt) {
+        //var aJSON = JSON.parse(evt.data);
+
+        //var headerLength,delayFactor,loopFactor;
+        //alert( aJSON.state );
+        //switch (aJSON.state) {
+        //}
+        alert(evt.data);
+        /*
+        var resultObj = JSON.parse(evt.data);
+        if ( resultObj.status == "found" ){
+            alert("Yes, found the remote");
+        }
+        else{
+            alert("No, not found the remote");
+        }*/
+    }
+    
+     function onCpp_ir_decode_ws_Error(evt) 
+     {
+           alert("error");
+     }     
 </script>
 
 <body>
@@ -107,6 +169,7 @@
   <input type="text" name="lastname" id="lastname"><br>
   <button type="button" id="b1">Sombat</button>
   <button type="button" id="b2">not Sombat</button>
+  <button type="button" id="b3">C++Websocket Test</button>
 </form> 
 
 </body>
