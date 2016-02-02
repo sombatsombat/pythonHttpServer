@@ -97,7 +97,7 @@
 
             var bytearray = new Uint8Array(2);
             bytearray[0] = 0x01; // 0x01 = scan IR
-            bytearray[1] = 0x03; // round scan
+            bytearray[1] = 0x00; // round scan
             cpp_ir_decode_ws.send(bytearray);            
             
         });
@@ -155,9 +155,24 @@
         if ( resultObj.state == 1 ){
             alert("Scan IR cmd received");
         }
-        else if( resultObj.state == 2){
+        else if( resultObj.state == 2){     // scan complete
             alert( "round scan " + resultObj["round-scan"]);
-            alert( resultObj["timing-list"]);
+            //alert( resultObj["timing-list"]);
+            if ( resultObj["round-scan"] < 1 ){
+                var bytearray = new Uint8Array(2);
+                bytearray[0] = 0x01; // 0x01 = scan IR
+                bytearray[1] = resultObj["round-scan"] + 1; // round scan
+                cpp_ir_decode_ws.send(bytearray);
+            }
+            else{   // round scan == 2
+                // send button object to ws
+                var aJson;
+                aJson = "{ \"command\" : \"store_ir\", \"name\" : \"" + $("#firstname").val() + "\" }";
+                //ct_data_ws.send($("#firstname").val());
+                //create aJson object for this remote button
+                ct_data_ws.send(aJson);
+            }
+            
         }
         else{
            alert("Other state");
@@ -184,6 +199,14 @@
   <button type="button" id="b1">Sombat</button>
   <button type="button" id="b2">not Sombat</button>
   <button type="button" id="b3">C++Websocket Test</button>
+  <br>
+  Remote name:<br>
+  <input type="text" id="remote_name"><br>
+  Button name:<br>
+  <input type="text" id="button_name"><br>
+  X Position:<input type="text" id="x_pos"><br>
+  Y Position:<input type="text" id="y_pos"><br>
+  timing-list:<input type="text" id="timing_list"><br>
   <button type="button" id="b4">scan and store IR</button>
 </form> 
 

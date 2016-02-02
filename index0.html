@@ -49,6 +49,7 @@
             onCt_data_ws_Error(evt)
         };
 
+        //cpp_ir_decode_ws = new WebSocket("ws://127.0.0.1:8080/IR_decode");
         cpp_ir_decode_ws = new WebSocket("ws://thaiftcbk.ddns.net:8080/IR_decode");
         //cpp_ir_decode_ws = new WebSocket("ws://thaiftcbk.ddns.net:9000");
 
@@ -91,16 +92,6 @@
             
         });
 
-        $( "#b4" ).click(function() {
-            //alert( "you click b3" );
-            //cpp_ir_decode_ws.send($("#firstname").val());
-
-            var bytearray = new Uint8Array(2);
-            bytearray[0] = 0x01; // 0x01 = scan IR
-            bytearray[1] = 0x03; // round scan
-            cpp_ir_decode_ws.send(bytearray);            
-            
-        });
     });
 
 
@@ -149,19 +140,15 @@
         //alert( aJSON.state );
         //switch (aJSON.state) {
         //}
-        //alert(evt.data);
-        
+        alert(evt.data);
+        /*
         var resultObj = JSON.parse(evt.data);
-        if ( resultObj.state == 1 ){
-            alert("Scan IR cmd received");
-        }
-        else if( resultObj.state == 2){
-            alert( "round scan " + resultObj["round-scan"]);
-            alert( resultObj["timing-list"]);
+        if ( resultObj.status == "found" ){
+            alert("Yes, found the remote");
         }
         else{
-           alert("Other state");
-        }
+            alert("No, not found the remote");
+        }*/
     }
     
      function onCpp_ir_decode_ws_Error(evt) 
@@ -184,7 +171,6 @@
   <button type="button" id="b1">Sombat</button>
   <button type="button" id="b2">not Sombat</button>
   <button type="button" id="b3">C++Websocket Test</button>
-  <button type="button" id="b4">scan and store IR</button>
 </form> 
 
 </body>
